@@ -8,10 +8,14 @@
 
   &__label {
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 24px;
     color: $color-label;
     margin-bottom: 4px;
+  }
+
+  &__required {
+    color: $color-error;
   }
 
   &__container {
@@ -29,20 +33,28 @@
     padding: 16px;
     box-sizing: border-box;
     font-size: 16px;
-    line-height: 32px;
-    color: $color-black;
+    line-height: 24px;
+    color: $color-text;
     border: 1px solid $color-grey;
 
     &::placeholder {
       font-weight: 400;
       font-size: 14px;
-      line-height: 24px;
+      line-height: 22px;
       color: $color-grey;
     }
 
     &:focus {
       border: 1px solid $color-light-blue;
     }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+
+  &__error {
+    border: 1px solid $color-error;
   }
 
   &__password {
@@ -50,11 +62,13 @@
     background: none;
     position: absolute;
     right: 16px;
-    top: 16px;
+    top: 13px;
+    font-size: 14px;
+    line-height: 22px;
     cursor: pointer;
   }
 
-  &__error {
+  &__errorText {
     margin-top: 3px;
     font-style: normal;
     font-weight: normal;

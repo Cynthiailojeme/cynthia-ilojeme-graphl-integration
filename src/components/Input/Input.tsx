@@ -22,6 +22,7 @@ interface Props {
   form?: any;
   disabled?: boolean;
   bottom?: number;
+  required?: boolean;
 }
 
 const Input = ({
@@ -38,6 +39,7 @@ const Input = ({
   id,
   disabled,
   bottom,
+  required,
 }: Props) => {
   const [inputType, setInputType] = useState<string>(type);
 
@@ -59,13 +61,14 @@ const Input = ({
       {label && (
         <label className={styles.input__label} htmlFor={name}>
           {label}
+          {required && <span className={styles.input__required}>*</span>}
         </label>
       )}
       <div className={styles.input__container}>
         <input
           className={classNames(
             styles.input__field,
-            error && "input__field--error"
+            error && styles.input__error
           )}
           type={inputType}
           onFocus={(field && field.onFocus) || onFocus}
@@ -80,6 +83,7 @@ const Input = ({
         {type === "password" && (
           <button
             className={styles.input__password}
+            type="button"
             onClick={handleShowPassword}
           >
             <span>{inputType === "password" ? "Show" : "Hide"}</span>
@@ -88,7 +92,7 @@ const Input = ({
       </div>
 
       {error && (
-        <p className={styles.input__error}>
+        <p className={styles.input__errorText}>
           {form.errors[field && field.name!]}
         </p>
       )}
