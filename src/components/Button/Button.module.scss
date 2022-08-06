@@ -1,0 +1,26 @@
+@import "../../sass/utilities/variables";
+
+.button {
+  border-radius: 30px;
+  height: 48px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  cursor: pointer;
+  white-space: nowrap;
+  background: $color-blue;
+  color: $color-white;
+  padding: 0 29px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 4px;
+
+  &:disabled {
+    cursor: not-allowed;
+    color: gray;
+  }
+}

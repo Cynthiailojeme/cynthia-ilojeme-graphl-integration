@@ -1,0 +1,11 @@
+overwrite: true
+schema: "https://dev.gql.manufactured.com/graphql"
+documents: "src/**/*.{ts,tsx}"
+generates:
+  src/generated/graphql.tsx:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
+config:
+  withHooks: true
