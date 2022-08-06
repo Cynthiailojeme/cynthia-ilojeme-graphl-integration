@@ -6,7 +6,7 @@ const Alert = (
   type: NotificationType,
   title: any,
   message: any
-) => {
+) => {  
   notification[type]({
     message: title,
     duration: 5,

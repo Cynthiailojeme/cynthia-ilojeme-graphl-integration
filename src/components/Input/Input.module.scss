@@ -4,37 +4,68 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-}
+  max-width: 467px;
 
-.input__label {
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: $color-black;
-  margin-bottom: 10px;
-}
-
-.input__field {
-  max-width: 521px;
-  width: inherit;
-  height: 48px;
-  background: $color-white;
-  border-radius: 4px;
-  padding: 16px;
-  box-sizing: border-box;
-  font-size: 16px;
-  line-height: 32px;
-  color: $color-black;
-  border: 1px solid $color-grey;
-
-  &::placeholder {
+  &__label {
     font-weight: 400;
-    font-size: 14px;
+    font-size: 16px;
     line-height: 24px;
-    color: $color-grey;
+    color: $color-label;
+    margin-bottom: 4px;
   }
 
-  &:focus {
-    border: 1px solid $color-light-blue;
+  &__container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__field {
+    position: relative;
+    width: inherit;
+    height: 48px;
+    background: $color-white;
+    border-radius: 4px;
+    padding: 16px;
+    box-sizing: border-box;
+    font-size: 16px;
+    line-height: 32px;
+    color: $color-black;
+    border: 1px solid $color-grey;
+
+    &::placeholder {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: $color-grey;
+    }
+
+    &:focus {
+      border: 1px solid $color-light-blue;
+    }
+  }
+
+  &__password {
+    border: none;
+    background: none;
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    cursor: pointer;
+  }
+
+  &__error {
+    margin-top: 3px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 24px;
+    color: $color-error;
+    font-weight: 400;
+    transition: all 300ms ease-in-out;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
   }
 }
