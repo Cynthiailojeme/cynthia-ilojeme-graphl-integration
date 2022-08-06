@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }: Props) => {
     const decodedToken = token && jwt_decode(token);
 
     if (decodedToken.exp * 1000 < Date.now()) {
-      Alert("error", "Session Expired!", "Kindly login again");
+      Alert("error", "Session Expired!", "Kindly sign in again");
       clearUserStorage();
     }
   }
