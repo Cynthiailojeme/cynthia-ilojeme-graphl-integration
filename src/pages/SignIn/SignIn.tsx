@@ -1,19 +1,59 @@
 import React from "react";
+import { Form, Formik, Field } from "formik";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
+import AuthWrapper from "../../components/AuthWrapper/AuthWrapper";
+import { SignInSchema } from "../../utils/validation";
 
 const SignIn = () => {
+  const signInUser = (values: any) => {
+    console.log("values", values);
+  };
   return (
-    <div>
-      <Input
-        label="First name"
-        type="text"
-        name="first_name"
-        onChange={() => {}}
-        placeholder="Enter first name"
-      />
-      <Button text="Submit" onClick={() => {}} marginTop={30}/>
-    </div>
+    <AuthWrapper
+      title="Sign In"
+      subtitle="Kindly enter your details to sign in
+    "
+    >
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={SignInSchema}
+        onSubmit={(values) => signInUser(values)}
+      >
+        {({ isValid, dirty }) => {
+          return (
+            <Form>
+              <Field
+                name="email"
+                label="Email Address"
+                type="text"
+                placeholder="Enter email address"
+                bottom={30}
+                component={Input}
+              />
+
+              <Field
+                name="password"
+                label="Password"
+                type="password"
+                placeholder="Enter password"
+                bottom={30}
+                component={Input}
+              />
+
+              <Button
+                text="Sign in"
+                onClick={() => {}}
+                disabled={!(isValid && dirty)}
+              />
+            </Form>
+          );
+        }}
+      </Formik>
+    </AuthWrapper>
   );
 };
 
