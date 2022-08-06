@@ -4,12 +4,19 @@ import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import AuthWrapper from "../../components/AuthWrapper/AuthWrapper";
 import { SignInSchema } from "../../utils/validation";
+import { useMutation } from "@apollo/client";
+import { SIGNIN_MUTATION } from "../../queries/authentification";
+import Alert from "../../utils/notification";
 
 const SignIn = () => {
-  const signInUser = (values: any) => {
-    console.log("values", values);
-  };
-  
+  const [signInUser, { data, loading }] = useMutation(SIGNIN_MUTATION, {
+    onError: (error) => {
+      Alert("error", "Failure!", error.message);
+    },
+  });
+
+  console.log("data", { data });
+
   return (
     <AuthWrapper
       title="Sign In"
@@ -22,7 +29,7 @@ const SignIn = () => {
           password: "",
         }}
         validationSchema={SignInSchema}
-        onSubmit={(values) => signInUser(values)}
+        onSubmit={(values) => signInUser({ variables: values })}
       >
         {({ isValid, dirty }) => {
           return (
@@ -48,7 +55,9 @@ const SignIn = () => {
               <Button
                 text="Sign in"
                 onClick={() => {}}
-                disabled={!(isValid && dirty)}
+                disabled={!(isValid && dirty) || loading}
+                loading={loading}
+                loadingText="Signing in"
               />
             </Form>
           );

@@ -36,7 +36,7 @@ const Indentification = () => {
               />
 
               <Button
-                text="Sign in"
+                text="Identify"
                 onClick={() => {}}
                 disabled={!(isValid && dirty)}
               />

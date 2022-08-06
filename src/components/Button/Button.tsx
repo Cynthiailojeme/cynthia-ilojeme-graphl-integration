@@ -6,17 +6,27 @@ interface Props {
   onClick: (data?: any) => void;
   disabled?: boolean;
   marginTop?: number;
+  loading?: boolean;
+  loadingText?: string;
 }
 
-const Button = ({ text, onClick, disabled, marginTop }: Props) => {
+const Button = ({
+  text,
+  onClick,
+  disabled,
+  marginTop,
+  loading,
+  loadingText,
+}: Props) => {
   return (
     <button
       className={styles.button}
       onClick={onClick}
       disabled={disabled}
+      type="submit"
       style={{ marginTop: `${marginTop}px` }}
     >
-      {text}
+      {loading ? loadingText : text}
     </button>
   );
 };
