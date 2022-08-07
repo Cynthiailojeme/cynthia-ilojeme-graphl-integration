@@ -1,34 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Form, Formik, Field } from "formik";
+import jwtDecode from "jwt-decode";
+import { useMutation } from "@apollo/client";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import AuthWrapper from "../../components/AuthWrapper/AuthWrapper";
 import styles from "../../components/AuthWrapper/AuthWrapper.module.scss";
 import { SignUpSchema } from "../../utils/validation";
-import { useLocation } from "react-router-dom";
+import Alert from "../../utils/notification";
+import { JWTDecode } from "../../routes/PrivateRoute";
+import { cleanUp } from "../../utils/functions";
+import { SIGNUP_MUTATION } from "../../queries/authentification";
+import Storage from "../../utils/storage";
 
 const SignUp = () => {
   const { search } = useLocation();
+  const navigate = useNavigate();
   const token = new URLSearchParams(search).get("token");
+  const decodedToken = token && jwtDecode<JWTDecode>(token);
+  const [tokenObj] = useState(decodedToken);
 
-  console.log("token", token);
+  const [signUpUser, { loading }] = useMutation(SIGNUP_MUTATION, {
+    onCompleted: (data) => {
+      Storage.set("user-token", data?.signUp?.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      Alert("error", "Failure!", error?.message);
+    },
+  });
 
-  const signUpUser = (values: any) => {
-    const payload = {
-      firstName: values.first_name,
-      lastName: values.last_name,
-      email: values.email,
-      password: values.password,
-      organization: {
-        name: values.organization,
-      },
-      title: values.title,
-    };
-
-    console.log("payload", payload);
-  };
-
-  return (
+  return !token ? (
+    <Navigate to="/identification" replace />
+  ) : (
     <AuthWrapper
       title="Sign Up"
       subtitle="Kindly enter your details to sign up
@@ -40,12 +45,26 @@ const SignUp = () => {
           last_name: "",
           organization: "",
           title: "",
-          email: "",
+          email: tokenObj && tokenObj.identifier,
           password: "",
           confirm_password: "",
         }}
         validationSchema={SignUpSchema}
-        onSubmit={(values) => signUpUser(values)}
+        onSubmit={(values) => {
+          const payload = {
+            firstName: values.first_name,
+            lastName: values.last_name,
+            email: values.email,
+            password: values.password,
+            organization: {
+              name: values.organization,
+              title: values.title,
+              // Added based on graphl api docs because organization kind is required
+              kind: "Merchant",
+            },
+          };
+          signUpUser({ variables: cleanUp(payload) });
+        }}
       >
         {({ isValid, dirty }) => {
           return (
@@ -59,6 +78,7 @@ const SignUp = () => {
                   bottom={30}
                   required
                   component={Input}
+                  disabled={!token}
                 />
                 <Field
                   name="last_name"
@@ -67,8 +87,19 @@ const SignUp = () => {
                   placeholder="Enter last name"
                   bottom={30}
                   component={Input}
+                  disabled={!token}
                 />
               </div>
+              <Field
+                name="title"
+                label="Title"
+                type="text"
+                placeholder="Enter title"
+                bottom={30}
+                required
+                component={Input}
+                disabled={!token}
+              />
               <Field
                 name="email"
                 label="Email Address"
@@ -79,26 +110,16 @@ const SignUp = () => {
                 disabled
                 component={Input}
               />
-              <div className={styles.wrapper__grid}>
-                <Field
-                  name="organization"
-                  label="Name of Organization"
-                  type="text"
-                  placeholder="Enter organization"
-                  bottom={30}
-                  required
-                  component={Input}
-                />
-                <Field
-                  name="title"
-                  label="Title"
-                  type="text"
-                  placeholder="Enter title"
-                  bottom={30}
-                  required
-                  component={Input}
-                />
-              </div>
+              <Field
+                name="organization"
+                label="Name of Organization"
+                type="text"
+                placeholder="Enter organization"
+                bottom={30}
+                required
+                component={Input}
+                disabled={!token}
+              />
 
               <div className={styles.wrapper__grid}>
                 <Field
@@ -109,6 +130,7 @@ const SignUp = () => {
                   required
                   bottom={30}
                   component={Input}
+                  disabled={!token}
                 />
                 <Field
                   name="confirm_password"
@@ -118,13 +140,16 @@ const SignUp = () => {
                   bottom={30}
                   required
                   component={Input}
+                  disabled={!token}
                 />
               </div>
 
               <Button
-                text="Sign in"
-                onClick={() => {}}
-                disabled={!(isValid && dirty)}
+                text="Sign Up"
+                disabled={!(isValid && dirty) || loading}
+                marginTop={20}
+                loading={loading}
+                loadingText="Signing up..."
               />
             </Form>
           );

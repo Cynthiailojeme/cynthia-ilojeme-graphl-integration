@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Form, Formik, Field } from "formik";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
@@ -7,15 +8,22 @@ import { SignInSchema } from "../../utils/validation";
 import { useMutation } from "@apollo/client";
 import { SIGNIN_MUTATION } from "../../queries/authentification";
 import Alert from "../../utils/notification";
+import Storage from "../../utils/storage";
 
 const SignIn = () => {
-  const [signInUser, { data, loading }] = useMutation(SIGNIN_MUTATION, {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const defaultEmail = location.state;
+
+  const [signInUser, { loading }] = useMutation(SIGNIN_MUTATION, {
+    onCompleted: (data) => {
+      Storage.set("user-token", data?.signIn?.token);
+      navigate("/");
+    },
     onError: (error) => {
-      Alert("error", "Failure!", error.message);
+      Alert("error", "Failure!", error?.message);
     },
   });
-
-  console.log("data", { data });
 
   return (
     <AuthWrapper
@@ -25,7 +33,7 @@ const SignIn = () => {
     >
       <Formik
         initialValues={{
-          email: "",
+          email: defaultEmail || "",
           password: "",
         }}
         validationSchema={SignInSchema}
@@ -53,11 +61,10 @@ const SignIn = () => {
               />
 
               <Button
-                text="Sign in"
-                onClick={() => {}}
+                text="Sign In"
                 disabled={!(isValid && dirty) || loading}
                 loading={loading}
-                loadingText="Signing in"
+                loadingText="Signing in..."
               />
             </Form>
           );

@@ -3,7 +3,7 @@ import styles from "./Button.module.scss";
 
 interface Props {
   text: string;
-  onClick: (data?: any) => void;
+  onClick?: (data?: any) => void;
   disabled?: boolean;
   marginTop?: number;
   loading?: boolean;

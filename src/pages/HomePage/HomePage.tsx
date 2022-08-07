@@ -1,5 +1,5 @@
 import React from "react";
-import { clearUserStorage } from "../../utils/actions";
+import { clearUserStorage } from "../../utils/functions";
 import styles from "./HomePage.module.scss";
 
 const HomePage = () => {

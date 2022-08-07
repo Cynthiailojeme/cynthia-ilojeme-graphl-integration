@@ -1,8 +1,8 @@
 import React from "react";
-import 'antd/dist/antd.min.css';
+import "antd/dist/antd.min.css";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "../pages/HomePage/HomePage";
-import Indentification from "../pages/Indentification/Indentification";
+import Identification from "../pages/Identification/Identification";
 import NotFound from "../pages/NotFound/NotFound";
 import SignIn from "../pages/SignIn/SignIn";
 import SignUp from "../pages/SignUp/SignUp";
@@ -20,7 +20,7 @@ const AllRoutes = () => {
             </PrivateRoute>
           }
         />
-        <Route path="/indentification" element={<Indentification />} />
+        <Route path="/identification" element={<Identification />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="*" element={<NotFound />} />

@@ -4,7 +4,6 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 467px;
 
   &__label {
     font-weight: 400;
@@ -73,7 +72,7 @@
     font-style: normal;
     font-weight: normal;
     font-size: 12px;
-    line-height: 24px;
+    line-height: 16px;
     color: $color-error;
     font-weight: 400;
     transition: all 300ms ease-in-out;
