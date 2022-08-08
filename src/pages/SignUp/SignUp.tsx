@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useLocation, Navigate, useNavigate } from "react-router-dom";
 import { Form, Formik, Field } from "formik";
 import jwtDecode from "jwt-decode";
-import { useMutation } from "@apollo/client";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import AuthWrapper from "../../components/AuthWrapper/AuthWrapper";
@@ -11,8 +10,8 @@ import { SignUpSchema } from "../../utils/validation";
 import Alert from "../../utils/notification";
 import { JWTDecode } from "../../routes/PrivateRoute";
 import { cleanUp } from "../../utils/functions";
-import { SIGNUP_MUTATION } from "../../queries/authentification";
 import Storage from "../../utils/storage";
+import { useSignUpMutationMutation } from "../../generated/graphql";
 
 const SignUp = () => {
   const { search } = useLocation();
@@ -21,7 +20,7 @@ const SignUp = () => {
   const decodedToken = token && jwtDecode<JWTDecode>(token);
   const [tokenObj] = useState(decodedToken);
 
-  const [signUpUser, { loading }] = useMutation(SIGNUP_MUTATION, {
+  const [signUpUser, { loading }] = useSignUpMutationMutation({
     onCompleted: (data) => {
       Storage.set("user-token", data?.signUp?.token);
       navigate("/");
@@ -36,8 +35,8 @@ const SignUp = () => {
   ) : (
     <AuthWrapper
       title="Sign Up"
-      subtitle="Kindly enter your details to sign up
-    "
+      subtitle="Kindly enter your details to sign up"
+      size="lg"
     >
       <Formik
         initialValues={{
@@ -91,16 +90,6 @@ const SignUp = () => {
                 />
               </div>
               <Field
-                name="title"
-                label="Title"
-                type="text"
-                placeholder="Enter title"
-                bottom={30}
-                required
-                component={Input}
-                disabled={!token}
-              />
-              <Field
                 name="email"
                 label="Email Address"
                 type="text"
@@ -109,6 +98,16 @@ const SignUp = () => {
                 required
                 disabled
                 component={Input}
+              />
+              <Field
+                name="title"
+                label="Title"
+                type="text"
+                placeholder="Enter title"
+                bottom={30}
+                required
+                component={Input}
+                disabled={!token}
               />
               <Field
                 name="organization"
@@ -149,7 +148,6 @@ const SignUp = () => {
                 disabled={!(isValid && dirty) || loading}
                 marginTop={20}
                 loading={loading}
-                loadingText="Signing up..."
               />
             </Form>
           );

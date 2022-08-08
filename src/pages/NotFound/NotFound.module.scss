@@ -1,0 +1,13 @@
+@import "../../sass/utilities/_variables.scss";
+
+.notfound {
+  height: 100%;
+  width: 100%;
+  padding: 50px;
+  background-color: $color-background;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+}

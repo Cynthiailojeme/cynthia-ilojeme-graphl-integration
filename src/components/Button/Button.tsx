@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "../Loader/Spinner";
 import styles from "./Button.module.scss";
 
 interface Props {
@@ -7,17 +8,9 @@ interface Props {
   disabled?: boolean;
   marginTop?: number;
   loading?: boolean;
-  loadingText?: string;
 }
 
-const Button = ({
-  text,
-  onClick,
-  disabled,
-  marginTop,
-  loading,
-  loadingText,
-}: Props) => {
+const Button = ({ text, onClick, disabled, marginTop, loading }: Props) => {
   return (
     <button
       className={styles.button}
@@ -26,7 +19,7 @@ const Button = ({
       type="submit"
       style={{ marginTop: `${marginTop}px` }}
     >
-      {loading ? loadingText : text}
+      {loading ? <Spinner /> : text}
     </button>
   );
 };

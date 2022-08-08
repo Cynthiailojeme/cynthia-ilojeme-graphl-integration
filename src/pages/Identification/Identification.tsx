@@ -1,21 +1,24 @@
 import React, { useState } from "react";
-import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { Form, Formik, Field } from "formik";
+import { IdentificationSchema } from "../../utils/validation";
+import { useRequestSignUpMutationMutation } from "../../generated/graphql";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import AuthWrapper from "../../components/AuthWrapper/AuthWrapper";
-import { IdentificationSchema } from "../../utils/validation";
-import { IDENTIFICATION_MUTATION } from "../../queries/authentification";
 import Alert from "../../utils/notification";
 
 const Identification = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const resetForm = () => {
+    (document.getElementById("form") as HTMLFormElement).reset();
+  };
 
-  const [identifyUser, { loading }] = useMutation(IDENTIFICATION_MUTATION, {
+  const [identifyUser, { loading }] = useRequestSignUpMutationMutation({
     onCompleted: () => {
-      Alert("success", "Success", "An email has been sent to your mail");
+      Alert("success", "Success!", "An email has been sent to your mail");
+      resetForm();
     },
     onError: ({ graphQLErrors, message }) => {
       const code = graphQLErrors[0]?.extensions?.code;
@@ -46,7 +49,7 @@ const Identification = () => {
       >
         {({ isValid, dirty }) => {
           return (
-            <Form>
+            <Form id="form">
               <Field
                 name="email"
                 label="Email Address"
@@ -60,7 +63,6 @@ const Identification = () => {
                 text="Submit"
                 disabled={!(isValid && dirty) || loading}
                 loading={loading}
-                loadingText="Submitting..."
               />
             </Form>
           );
