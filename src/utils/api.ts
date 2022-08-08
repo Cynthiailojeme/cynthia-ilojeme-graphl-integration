@@ -1,14 +1,14 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import Storage from "./storage";
 
 const httpLink = createHttpLink({
-  // Should be passed as an env in an ideal situation
   uri: process.env.REACT_APP_MANUFACTURED_API,
 });
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
-  const token = localStorage.getItem("user-token");
+  const token = Storage.get("user-token");
   // return the headers to the context so httpLink can read them
   return {
     headers: {

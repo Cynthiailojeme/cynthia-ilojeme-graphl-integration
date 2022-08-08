@@ -8,12 +8,13 @@ export const SignInSchema = Yup.object().shape({
   password: Yup.string().required("password is required."),
 });
 
-export const IndentificationSchema = Yup.object().shape({
+export const IdentificationSchema = Yup.object().shape({
   email: Yup.string().email().trim().required("email is required."),
 });
 
 export const SignUpSchema = Yup.object().shape({
   first_name: Yup.string()
+    .trim()
     .min(2, "first name cannot be less than 2 characters.")
     .required("first name is required.")
     .matches(
@@ -21,6 +22,7 @@ export const SignUpSchema = Yup.object().shape({
       "cannot contain numbers and special characters except hyphen."
     ),
   last_name: Yup.string()
+    .trim()
     .min(2, "last name cannot be less than 2 characters.")
     .matches(
       /^[A-Za-z/-]+$/,

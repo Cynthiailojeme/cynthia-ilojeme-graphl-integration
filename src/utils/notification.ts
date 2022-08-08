@@ -1,12 +1,10 @@
 import { notification } from "antd";
 
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
+type NotificationType = "success" | "info" | "warning" | "error";
 
-const Alert = (
-  type: NotificationType,
-  title: any,
-  message: any
-) => {  
+const Alert = (type: NotificationType, title: any, message: any) => {
+  notification.destroy();
+
   notification[type]({
     message: title,
     duration: 5,

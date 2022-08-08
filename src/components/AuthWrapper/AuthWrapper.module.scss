@@ -27,7 +27,7 @@
   }
 
   &__form {
-    min-width: 467px;
+    width: 600px;
     min-height: 480px;
     padding: 48px 60px;
     box-sizing: border-box;
@@ -52,8 +52,9 @@
     padding-top: 97px;
 
     &__form {
-      width: 100%;
-      max-width: 500px;
+      // To overide inline width
+      width: 100% !important;
+      max-width: 500px !important;
       padding: 30px;
     }
 

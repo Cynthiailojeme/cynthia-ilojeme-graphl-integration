@@ -1,15 +1,29 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Form, Formik, Field } from "formik";
 import Button from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import AuthWrapper from "../../components/AuthWrapper/AuthWrapper";
 import { SignInSchema } from "../../utils/validation";
+import Alert from "../../utils/notification";
+import Storage from "../../utils/storage";
+import { useSignInMutationMutation } from "../../generated/graphql";
 
 const SignIn = () => {
-  const signInUser = (values: any) => {
-    console.log("values", values);
-  };
-  
+  const location = useLocation();
+  const navigate = useNavigate();
+  const defaultEmail = location.state;
+
+  const [signInUser, { loading }] = useSignInMutationMutation({
+    onCompleted: (data) => {
+      Storage.set("user-token", data?.signIn?.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      Alert("error", "Failure!", error?.message);
+    },
+  });
+
   return (
     <AuthWrapper
       title="Sign In"
@@ -18,11 +32,11 @@ const SignIn = () => {
     >
       <Formik
         initialValues={{
-          email: "",
+          email: defaultEmail || "",
           password: "",
         }}
         validationSchema={SignInSchema}
-        onSubmit={(values) => signInUser(values)}
+        onSubmit={(values) => signInUser({ variables: values })}
       >
         {({ isValid, dirty }) => {
           return (
@@ -46,9 +60,9 @@ const SignIn = () => {
               />
 
               <Button
-                text="Sign in"
-                onClick={() => {}}
-                disabled={!(isValid && dirty)}
+                text="Sign In"
+                disabled={!(isValid && dirty) || loading}
+                loading={loading}
               />
             </Form>
           );

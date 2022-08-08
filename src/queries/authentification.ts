@@ -1,39 +1,41 @@
 import { gql } from "@apollo/client";
 
-export const QUERY_SIGNUP_USER = gql`
-  query User() {
-    me {
-        firstName,
-        lastName,
-        email,
-        createdAt,
-        memberships {
-            org {
-                name,
-                kind,
-                createdAt
-            },
-            role
-        }
+export const IDENTIFICATION_MUTATION = gql`
+  mutation requestSignUpMutation($email: Email!) {
+    requestSignUp(input: { email: $email }) {
+      error
     }
   }
 `;
 
-export const QUERY_SIGNIN_USER = gql`
-  query User() {
-    me {
-        firstName,
-        lastName,
-        email,
-        createdAt,
-        memberships {
-            org {
-                name,
-                kind,
-                createdAt
-            },
-            role
-        }
+export const SIGNIN_MUTATION = gql`
+  mutation signInMutation($email: Email!, $password: NonEmptyString!) {
+    signIn(input: { email: $email, password: $password }) {
+      token
+    }
+  }
+`;
+
+export const SIGNUP_MUTATION = gql`
+  mutation SignUpMutation(
+    $email: Email
+    $password: NonEmptyString!
+    $firstName: NonEmptyString!
+    $lastName: NonEmptyString
+    $token: JWT
+    $organization: OrganizationInput
+  ) {
+    signUp(
+      input: {
+        email: $email
+        password: $password
+        firstName: $firstName
+        lastName: $lastName
+        organization: $organization
+        token: $token
+      }
+    ) {
+      token
     }
   }
 `;
